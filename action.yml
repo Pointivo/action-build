@@ -1,0 +1,9 @@
+name: 'Build (Pointivo)'
+description: 'Build pointivo container images'
+#inputs:
+#outputs:
+runs:
+  using: "composite"
+  steps:
+    - run: ${{ github.action_path }}/build.sh
+      shell: bash
