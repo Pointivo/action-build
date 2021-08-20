@@ -37,7 +37,7 @@ echo "LOCAL_IMAGE_TAG=${LOCAL_IMAGE_TAG}" >> $GITHUB_ENV
 build_target() {
   _target=${1}
   _tag=${2}
-  command="sudo DOCKER_BUILDKIT=1 docker build --pull "
+  command="DOCKER_BUILDKIT=1 docker build --pull "
   command+="--target \"${_target}\" "
   if [ ! -z "${_tag}" ]; then
     # Final build stage only
@@ -68,8 +68,8 @@ done
 
 # Refresh Images
 echo "Pulling latest images..."
-for image in ${PULL_IMAGES//,/ }; do
-    docker pull "${image}"
+for _image in ${PULL_IMAGES//,/ }; do
+    docker pull "${_image}"
 done
 
 ###############
