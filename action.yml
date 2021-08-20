@@ -5,5 +5,5 @@ description: 'Build pointivo container images'
 runs:
   using: "composite"
   steps:
-    - run: build.sh
+    - run: bash build.sh
       shell: bash
