@@ -37,7 +37,7 @@ echo "LOCAL_IMAGE_TAG=${LOCAL_IMAGE_TAG}" >> $GITHUB_ENV
 build_target() {
   _target=${1}
   _tag=${2}
-  command="DOCKER_BUILDKIT=1 docker build --pull "
+  command="sudo DOCKER_BUILDKIT=1 docker build --pull "
   command+="--target \"${_target}\" "
   if [ ! -z "${_tag}" ]; then
     # Final build stage only
