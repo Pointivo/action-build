@@ -5,5 +5,5 @@ description: 'Build pointivo container images'
 runs:
   using: "composite"
   steps:
-    - run: sudo ${GITHUB_ACTION_PATH}/build.sh
+    - run: ${GITHUB_ACTION_PATH}/build.sh
       shell: bash
