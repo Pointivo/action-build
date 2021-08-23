@@ -3,7 +3,7 @@ description: 'Build pointivo container images'
 #inputs:
 #outputs:
 runs:
-  using: "composite"
+  using: composite
   steps:
     - run: ${GITHUB_ACTION_PATH}/build.sh
       shell: bash
