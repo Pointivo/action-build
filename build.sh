@@ -22,7 +22,8 @@ dockerfile_name=${DOCKERFILE_NAME:-Dockerfile}
 DOCKERFILE="${dockerfile_directory%/}/${dockerfile_name}"
 GIT_SHA_SHORT=$(git rev-parse --short HEAD)
 RELEASE_TAG=${RELEASE_TAG:-"release"}
-IMAGE_TAG="${IMAGE_NAME}:${SEMVER}_${RELEASE_TAG}.${GIT_SHA_SHORT}"
+REPOSITORY=${REPOSITORY:-$IMAGE_NAME}
+IMAGE_TAG="${SEMVER}_${RELEASE_TAG}.${GIT_SHA_SHORT}"
 echo "Dockerfile: ${DOCKERFILE}"
 echo "Git commit hash: ${GIT_SHA_SHORT}"
 echo "Targets to cache: ${CACHED_STAGES}"
@@ -118,4 +119,4 @@ if [ -f "${status_file}" ]; then
 fi
 
 # Build Final Target
-build_final ${RELEASE_STAGE} ${IMAGE_TAG}
+build_final ${RELEASE_STAGE} ${REPOSITORY}:${IMAGE_TAG}
