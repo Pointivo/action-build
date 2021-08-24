@@ -1,9 +1,19 @@
 name: build
 description: 'Build Pointivo container images'
 #inputs:
-#outputs:
+outputs:
+  imageTag:
+    description: Docker Image Tag
+    value: ${{ steps.build.outputs.imageTag }}
+  semver:
+    description: SEMVER
+    value: ${{ steps.build.outputs.semver }}
+  commitHash:
+    description: Commit SHA Short
+    value: ${{ steps.build.outputs.commitHash }}
 runs:
   using: composite
   steps:
-    - run: ${GITHUB_ACTION_PATH}/build.sh
+    - id: build
+      run: ${GITHUB_ACTION_PATH}/build.sh
       shell: bash

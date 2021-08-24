@@ -34,9 +34,9 @@ semver diff ${SEMVER} ${SEMVER}
 echo "GIT_SHA_SHORT=${GIT_SHA_SHORT}" >> $GITHUB_ENV
 echo "SEMVER=${SEMVER}" >> $GITHUB_ENV
 echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
-echo "::set-output name=GIT_SHA_SHORT::${GIT_SHA_SHORT}"
-echo "::set-output name=SEMVER::${SEMVER}"
-echo "::set-output name=IMAGE_TAG::${IMAGE_TAG}"
+echo "::set-output name=commitHash::${GIT_SHA_SHORT}"
+echo "::set-output name=semver::${SEMVER}"
+echo "::set-output name=imageTag::${IMAGE_TAG}"
 
 export DOCKER_BUILDKIT=1
 
