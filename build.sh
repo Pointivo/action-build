@@ -67,9 +67,10 @@ build_final() {
 }
 
 export_reports() {
+  mkdir -p ./build
   id=$(docker create ${BUILD_IMAGE_NAME})
   for _path in ${ARTIFACT_PATHS//,/ }; do
-    docker cp $id:/${_path} ./build/${_path} || true
+    docker cp $id:${_path} ./build${_path} || true
   done
   docker rm $id
 }
