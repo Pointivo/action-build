@@ -1,5 +1,5 @@
-name: 'Build (Pointivo)'
-description: 'Build pointivo container images'
+name: build
+description: 'Build Pointivo container images'
 #inputs:
 #outputs:
 runs:

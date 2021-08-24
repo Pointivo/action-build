@@ -20,12 +20,10 @@ SEMVER=${SEMVER:-1.0.0}
 dockerfile_directory=${DOCKERFILE_DIRECTORY:-./}
 dockerfile_name=${DOCKERFILE_NAME:-Dockerfile}
 DOCKERFILE="${dockerfile_directory%/}/${dockerfile_name}"
-GIT_BRANCH=${GITHUB_REF}
 GIT_SHA_SHORT=$(git rev-parse --short HEAD)
 RELEASE_TAG=${RELEASE_TAG:-"release"}
 IMAGE_TAG="${IMAGE_NAME}:${SEMVER}_${RELEASE_TAG}.${GIT_SHA_SHORT}"
 echo "Dockerfile: ${DOCKERFILE}"
-echo "GIT_BRANCH: ${GIT_BRANCH}"
 echo "Git commit hash: ${GIT_SHA_SHORT}"
 echo "Targets to cache: ${CACHED_STAGES}"
 echo "build_args: ${build_args}"
@@ -34,8 +32,11 @@ echo "semver: ${SEMVER}"
 semver diff ${SEMVER} ${SEMVER}
 # Save ENV variables for downstream Github Action steps
 echo "GIT_SHA_SHORT=${GIT_SHA_SHORT}" >> $GITHUB_ENV
-echo "ESCAPEDSEMVER=${SEMVER//[-+]/_}" >> $GITHUB_ENV
+echo "SEMVER=${SEMVER}" >> $GITHUB_ENV
 echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
+echo "::set-output name=GIT_SHA_SHORT::${GIT_SHA_SHORT}"
+echo "::set-output name=SEMVER::${SEMVER}"
+echo "::set-output name=IMAGE_TAG::${IMAGE_TAG}"
 
 export DOCKER_BUILDKIT=1
 
