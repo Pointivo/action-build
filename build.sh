@@ -78,6 +78,7 @@ export_reports() {
 
 on_exit() {
   ret_code=$?
+  echo "Deleting build image: ${BUILD_IMAGE_NAME}"
   docker rmi --force ${BUILD_IMAGE_NAME}
   exit $ret_code
 }
@@ -119,4 +120,4 @@ if [ -f "${status_file}" ]; then
 fi
 
 # Build Final Target
-build_final ${RELEASE_STAGE} ${REPOSITORY}:${IMAGE_TAG}
+build_final ${RELEASE_STAGE} "${REPOSITORY}:${IMAGE_TAG}"
