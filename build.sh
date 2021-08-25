@@ -45,11 +45,11 @@ build_stage() {
   _stage=${1}
   echo "Building stage: ${_stage}"
   docker build ${stage_prefix}  \
-    --target ${_stage} \
+    --target "${_stage}" \
     -t "${CACHE_LAYER_PREFIX}_${_stage}" \
     --build-arg SEMVER="${SEMVER}" \
-    ${EXTRA_BUILD_ARGS} \
-    -f ${DOCKERFILE} \
+    "${EXTRA_BUILD_ARGS}" \
+    -f "${DOCKERFILE}" \
     ./
 }
 
@@ -60,10 +60,10 @@ build_final() {
   docker build \
     --squash \
     -t "${_tag}" \
-    --target ${_stage} \
+    --target "${_stage}" \
     --build-arg SEMVER="${SEMVER}" \
-    ${EXTRA_BUILD_ARGS} \
-    -f ${DOCKERFILE} \
+    "${EXTRA_BUILD_ARGS}" \
+    -f "${DOCKERFILE}" \
     ./
 }
 
