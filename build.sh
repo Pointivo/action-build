@@ -70,18 +70,21 @@ build_final() {
 }
 
 export_reports() {
+  echo "Exporting Test/Reports: ${ARTIFACT_PATHS}"
   mkdir -p ./build
   id=$(docker create ${BUILD_IMAGE_NAME})
   for _path in ${ARTIFACT_PATHS//,/ }; do
     docker cp $id:${_path} ./build${_path} || true
   done
   docker rm $id
+  echo "Done exporting tests"
 }
 
 on_exit() {
   ret_code=$?
   echo "Deleting build image: ${BUILD_IMAGE_NAME}"
   docker rmi --force ${BUILD_IMAGE_NAME}
+  echo "Cleanup complete, exiting."
   exit $ret_code
 }
 
@@ -90,7 +93,7 @@ on_exit() {
 ###############
 
 # Refresh Images
-echo "Pulling latest images..."
+echo "Pulling latest images: ${PULL_IMAGES}"
 for _image in ${PULL_IMAGES//,/ }; do
   docker pull "${_image}"
 done
