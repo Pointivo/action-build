@@ -44,27 +44,29 @@ export DOCKER_BUILDKIT=1
 build_stage() {
   _stage=${1}
   echo "Building stage: ${_stage}"
-  docker build ${stage_prefix}  \
-    --target "${_stage}" \
-    -t "${CACHE_LAYER_PREFIX}_${_stage}" \
-    --build-arg SEMVER="${SEMVER}" \
-    "${EXTRA_BUILD_ARGS}" \
-    -f "${DOCKERFILE}" \
-    ./
+  command="docker build \"${stage_prefix}\" "
+  command+="--target \"${_stage}\" "
+  command+="-t \"${CACHE_LAYER_PREFIX}_${_stage}\" "
+  command+="--build-arg SEMVER=\"${SEMVER}\" "
+  command+="${EXTRA_BUILD_ARGS} "
+  command+="-f \"${DOCKERFILE}\" "
+  command+="./"
+  eval command
 }
 
 build_final() {
   _stage=${1}
   _tag=${2}
   echo "Building final stage: ${_stage}"
-  docker build \
-    --squash \
-    -t "${_tag}" \
-    --target "${_stage}" \
-    --build-arg SEMVER="${SEMVER}" \
-    "${EXTRA_BUILD_ARGS}" \
-    -f "${DOCKERFILE}" \
-    ./
+  command="docker build "
+  command+="--squash "
+  command+="-t \"${_tag}\" "
+  command+="--target \"${_stage}\" "
+  command+="--build-arg SEMVER=\"${SEMVER}\" "
+  command+="${EXTRA_BUILD_ARGS} "
+  command+="-f \"${DOCKERFILE}\" "
+  command+="./"
+  eval command
 }
 
 export_reports() {
