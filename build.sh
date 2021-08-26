@@ -9,13 +9,14 @@ fi
 EXTRA_BUILD_ARGS=${EXTRA_BUILD_ARGS:-""}
 DOCKERFILE_DIRECTORY=${DOCKERFILE_DIRECTORY:-"./"}
 DOCKERFILE_NAME=${DOCKERFILE_NAME:-"Dockerfile"}
-ARTIFACT_PATHS=${ARTIFACT_PATHS:-"/test-results,/reports,/build_status"}
 CACHED_STAGES=${CACHED_STAGES:-"tooling,runtime,dependencies"}
 BUILD_STAGE=${BUILD_STAGE:-"build"}
 RELEASE_STAGE=${RELEASE_STAGE:-$IMAGE_NAME}
 PULL_IMAGES=${PULL_IMAGES:-""}
 CACHE_LAYER_PREFIX=${CACHE_LAYER_PREFIX:-$IMAGE_NAME}
 BUILD_IMAGE_NAME="${CACHE_LAYER_PREFIX}_build"
+ARTIFACT_PATHS=${ARTIFACT_PATHS:-"/test-results,/reports,/build_status"}
+ARTIFACT_STAGE=${ARTIFACT_STAGE:-$BUILD_IMAGE_NAME}
 SEMVER=${SEMVER:-1.0.0}
 dockerfile_directory=${DOCKERFILE_DIRECTORY:-./}
 dockerfile_name=${DOCKERFILE_NAME:-Dockerfile}
@@ -72,7 +73,7 @@ build_final() {
 export_reports() {
   echo "Exporting Test/Reports: ${ARTIFACT_PATHS}"
   mkdir -p ./build
-  id=$(docker create ${BUILD_IMAGE_NAME})
+  id=$(docker create ${ARTIFACT_STAGE})
   for _path in ${ARTIFACT_PATHS//,/ }; do
     docker cp $id:${_path} ./build${_path} || true
   done
