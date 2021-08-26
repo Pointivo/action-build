@@ -51,7 +51,7 @@ build_stage() {
   command+="${EXTRA_BUILD_ARGS} "
   command+="-f \"${DOCKERFILE}\" "
   command+="./"
-  eval command
+  eval $command
 }
 
 build_final() {
@@ -66,7 +66,7 @@ build_final() {
   command+="${EXTRA_BUILD_ARGS} "
   command+="-f \"${DOCKERFILE}\" "
   command+="./"
-  eval command
+  eval $command
 }
 
 export_reports() {
