@@ -74,8 +74,8 @@ export_reports() {
   echo "Exporting Test/Reports: ${ARTIFACT_PATHS}"
   mkdir -p ./build
   ARTIFACT_IMAGE="${CACHE_LAYER_PREFIX}_${ARTIFACT_STAGE}"
-  docker build -t "${ARTIFACT_IMAGE}" --target "${ARTIFACT_STAGE}" -f "${DOCKERFILE}" ./
-  id=$(docker create ${ARTIFACT_IMAGE})
+  build_stage ${ARTIFACT_STAGE}
+  id=$(docker create "${ARTIFACT_IMAGE}")
   for _path in ${ARTIFACT_PATHS//,/ }; do
     docker cp $id:${_path} ./build${_path} || true
   done
