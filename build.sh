@@ -73,11 +73,14 @@ build_final() {
 export_reports() {
   echo "Exporting Test/Reports: ${ARTIFACT_PATHS}"
   mkdir -p ./build
-  id=$(docker create ${ARTIFACT_STAGE})
+  ARTIFACT_IMAGE="$IMAGE_NAME_${ARTIFACT_STAGE}"
+  docker build -t ${ARTIFACT_IMAGE} --target ${ARTIFACT_STAGE} -f \"${DOCKERFILE} ./
+  id=$(docker create ${ARTIFACT_IMAGE})
   for _path in ${ARTIFACT_PATHS//,/ }; do
     docker cp $id:${_path} ./build${_path} || true
   done
   docker rm $id
+  docker rmi --force ${ARTIFACT_IMAGE}
   echo "Done exporting tests"
 }
 
