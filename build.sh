@@ -44,7 +44,7 @@ export DOCKER_BUILDKIT=1
 build_stage() {
   _stage=${1}
   echo "Building stage: ${_stage}"
-  command="docker build \"${stage_prefix}\" "
+  command="docker build "
   command+="--target \"${_stage}\" "
   command+="-t \"${CACHE_LAYER_PREFIX}_${_stage}\" "
   command+="--build-arg SEMVER=\"${SEMVER}\" "
