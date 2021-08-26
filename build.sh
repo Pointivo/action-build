@@ -75,7 +75,7 @@ export_reports() {
   echo "Exporting Test/Reports: ${ARTIFACT_PATHS}"
   mkdir -p ./build
   build_stage ${ARTIFACT_STAGE}
-  id=$(docker create ${ARTIFACT_IMAGE})
+  id=$(docker create ${ARTIFACT_IMAGE} /bin/sh)
   for _path in ${ARTIFACT_PATHS//,/ }; do
     echo "Exporting: ${_path}"
     docker cp $id:${_path} ./build${_path} || true
@@ -90,6 +90,7 @@ on_exit() {
   docker rmi --force ${BUILD_IMAGE_NAME} || true
   echo "Deleting artifact image: ${ARTIFACT_IMAGE}"
   docker rmi --force ${ARTIFACT_IMAGE} || true
+  # docker system prune? The cache images sometime don't get removed and subsequent builds will still use cache
   echo "Cleanup complete, exiting."
   exit $ret_code
 }
