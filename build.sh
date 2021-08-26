@@ -18,21 +18,23 @@ BUILD_IMAGE_NAME="${CACHE_LAYER_PREFIX}_build"
 ARTIFACT_PATHS=${ARTIFACT_PATHS:-"/test-results,/reports,/build_status"}
 ARTIFACT_STAGE=${ARTIFACT_STAGE:-$BUILD_STAGE}
 ARTIFACT_IMAGE="${CACHE_LAYER_PREFIX}_${ARTIFACT_STAGE}"
-SEMVER=${SEMVER:-1.0.0}
 dockerfile_directory=${DOCKERFILE_DIRECTORY:-./}
 dockerfile_name=${DOCKERFILE_NAME:-Dockerfile}
 DOCKERFILE="${dockerfile_directory%/}/${dockerfile_name}"
 GIT_SHA_SHORT=$(git rev-parse --short HEAD)
-RELEASE_TAG=${RELEASE_TAG:-"release"}
+RELEASE_TAG=${RELEASE_TAG:-"snapshot"}
 REPOSITORY=${REPOSITORY:-$IMAGE_NAME}
-IMAGE_TAG="${SEMVER}_${RELEASE_TAG}.${GIT_SHA_SHORT}"
+SEMVER=${SEMVER:-1.0.0}
+# Validate SEMVER
+semver diff ${SEMVER} ${SEMVER}
+FULL_SEMVER="${SEMVER}-${RELEASE_TAG}+${GIT_SHA_SHORT}"
+IMAGE_TAG="${SEMVER}_${RELEASE_TAG}_${GIT_SHA_SHORT}"
 echo "Dockerfile: ${DOCKERFILE}"
 echo "Git commit hash: ${GIT_SHA_SHORT}"
 echo "Targets to cache: ${CACHED_STAGES}"
 echo "build_args: ${build_args}"
 echo "semver: ${SEMVER}"
-# Validate SEMVER
-semver diff ${SEMVER} ${SEMVER}
+echo "full semver: ${FULL_SEMVER}"
 # Save ENV variables for downstream Github Action steps
 echo "GIT_SHA_SHORT=${GIT_SHA_SHORT}" >> $GITHUB_ENV
 echo "SEMVER=${SEMVER}" >> $GITHUB_ENV
@@ -49,7 +51,7 @@ build_stage() {
   command="docker build "
   command+="--target \"${_stage}\" "
   command+="-t \"${CACHE_LAYER_PREFIX}_${_stage}\" "
-  command+="--build-arg SEMVER=\"${SEMVER}\" "
+  command+="--build-arg SEMVER=\"${FULL_SEMVER}\" "
   command+="${EXTRA_BUILD_ARGS} "
   command+="-f \"${DOCKERFILE}\" "
   command+="./"
@@ -64,7 +66,7 @@ build_final() {
   command+="--squash "
   command+="-t \"${_tag}\" "
   command+="--target \"${_stage}\" "
-  command+="--build-arg SEMVER=\"${SEMVER}\" "
+  command+="--build-arg SEMVER=\"${FULL_SEMVER}\" "
   command+="${EXTRA_BUILD_ARGS} "
   command+="-f \"${DOCKERFILE}\" "
   command+="./"
