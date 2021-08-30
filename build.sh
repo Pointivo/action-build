@@ -15,9 +15,7 @@ RELEASE_STAGE=${RELEASE_STAGE:-$IMAGE_NAME}
 PULL_IMAGES=${PULL_IMAGES:-""}
 CACHE_LAYER_PREFIX=${CACHE_LAYER_PREFIX:-$IMAGE_NAME}
 BUILD_IMAGE_NAME="${CACHE_LAYER_PREFIX}_build"
-ARTIFACT_PATHS=${ARTIFACT_PATHS:-"/test-results,/reports,/build_status"}
-ARTIFACT_STAGE=${ARTIFACT_STAGE:-$BUILD_STAGE}
-ARTIFACT_IMAGE="${CACHE_LAYER_PREFIX}_${ARTIFACT_STAGE}"
+ARTIFACT_PATHS=${ARTIFACT_PATHS:-"/test-results,/build_status"}
 dockerfile_directory=${DOCKERFILE_DIRECTORY:-./}
 dockerfile_name=${DOCKERFILE_NAME:-Dockerfile}
 DOCKERFILE="${dockerfile_directory%/}/${dockerfile_name}"
@@ -76,8 +74,8 @@ build_final() {
 export_reports() {
   echo "Exporting Test/Reports: ${ARTIFACT_PATHS}"
   mkdir -p ./build
-  build_stage ${ARTIFACT_STAGE}
-  id=$(docker create ${ARTIFACT_IMAGE} /bin/sh)
+  build_stage ${BUILD_STAGE}
+  id=$(docker create ${BUILD_STAGE} /bin/sh)
   for _path in ${ARTIFACT_PATHS//,/ }; do
     echo "Exporting: ${_path}"
     docker cp $id:${_path} ./build${_path} || true
@@ -90,8 +88,6 @@ on_exit() {
   ret_code=$?
   echo "Deleting build image: ${BUILD_IMAGE_NAME}"
   docker rmi --force ${BUILD_IMAGE_NAME} || true
-  echo "Deleting artifact image: ${ARTIFACT_IMAGE}"
-  docker rmi --force ${ARTIFACT_IMAGE} || true
   # docker system prune? The cache images sometime don't get removed and subsequent builds will still use cache
   echo "Cleanup complete, exiting."
   exit $ret_code
