@@ -24,7 +24,7 @@ DOCKERFILE="${dockerfile_directory%/}/${dockerfile_name}"
 GIT_SHA_SHORT=$(git rev-parse --short HEAD)
 RELEASE_TAG=${RELEASE_TAG:-"snapshot"}
 REPOSITORY=${REPOSITORY:-$IMAGE_NAME}
-SEMVER=${SEMVER:-1.0.0}
+SEMVER=$(./version.sh -g)
 # Validate SEMVER
 semver diff ${SEMVER} ${SEMVER}
 FULL_SEMVER="${SEMVER}-${RELEASE_TAG}+${GIT_SHA_SHORT}"
