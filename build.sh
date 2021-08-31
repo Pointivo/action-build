@@ -11,10 +11,10 @@ DOCKERFILE_DIRECTORY=${DOCKERFILE_DIRECTORY:-"./"}
 DOCKERFILE_NAME=${DOCKERFILE_NAME:-"Dockerfile"}
 CACHED_STAGES=${CACHED_STAGES:-"tooling,runtime,dependencies"}
 BUILD_STAGE=${BUILD_STAGE:-"build"}
+BUILD_IMAGE_NAME="${CACHE_LAYER_PREFIX}_${BUILD_STAGE}"
 RELEASE_STAGE=${RELEASE_STAGE:-$IMAGE_NAME}
 PULL_IMAGES=${PULL_IMAGES:-""}
 CACHE_LAYER_PREFIX=${CACHE_LAYER_PREFIX:-$IMAGE_NAME}
-BUILD_IMAGE_NAME="${CACHE_LAYER_PREFIX}_build"
 ARTIFACT_PATHS=${ARTIFACT_PATHS:-"/test-results,/build_status"}
 dockerfile_directory=${DOCKERFILE_DIRECTORY:-./}
 dockerfile_name=${DOCKERFILE_NAME:-Dockerfile}
@@ -25,8 +25,8 @@ REPOSITORY=${REPOSITORY:-$IMAGE_NAME}
 SEMVER=$(./version.sh -g)
 # Validate SEMVER
 semver diff ${SEMVER} ${SEMVER}
-FULL_SEMVER="${SEMVER}-${RELEASE_TAG}+${GIT_SHA_SHORT}"
-IMAGE_TAG="${SEMVER}_${RELEASE_TAG}_${GIT_SHA_SHORT}"
+FULL_SEMVER="${SEMVER}-${RELEASE_TAG}+GH${GITHUB_RUN_NUMBER}.${GIT_SHA_SHORT}"
+IMAGE_TAG="${SEMVER}_${RELEASE_TAG}_GH${GITHUB_RUN_NUMBER}.${GIT_SHA_SHORT}"
 echo "Dockerfile: ${DOCKERFILE}"
 echo "Git commit hash: ${GIT_SHA_SHORT}"
 echo "Stages to cache: ${CACHED_STAGES}"
@@ -74,8 +74,7 @@ build_final() {
 export_reports() {
   echo "Exporting Test/Reports: ${ARTIFACT_PATHS}"
   mkdir -p ./build
-  build_stage ${BUILD_STAGE}
-  id=$(docker create ${BUILD_STAGE} /bin/sh)
+  id=$(docker create ${BUILD_IMAGE_NAME} /bin/sh)
   for _path in ${ARTIFACT_PATHS//,/ }; do
     echo "Exporting: ${_path}"
     docker cp $id:${_path} ./build${_path} || true
