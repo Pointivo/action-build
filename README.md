@@ -12,9 +12,11 @@ Sample: [Dockerfile TEMPLATE](Dockerfile_TEMPLATE)
   - The name for the IMAGE when uploaded to the container registry. (Eg. `core-api`)
 - **CACHED_STAGES** (Default: `tooling,runtime,dependencies`)
     - A comma seperated list of build stage (target) within your Dockerfile that can be cached between builds.
-- **ARTIFACT_PATHS** (Default: `/test-results,/build_status`)
-  - A comma seperated list of absolute paths where the files or folders for unit tests/reports and 
-  build_status files are located.
+- **TEST_PATH**
+  - The location of the unit tests files after build. This path should be relative to the build container image.
+- **BUILD_STATUS_PATH**
+  - The location of the `build_status` file which the Docker build stage produces (to declare if the build was 
+   successful or not). This path should be relative to the build container image.
   
 ### Optional:
 

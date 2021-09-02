@@ -71,16 +71,19 @@ build_final() {
   eval $command
 }
 
-export_reports() {
+export_artifacts() {
   echo "Exporting Test/Reports: ${ARTIFACT_PATHS}"
-  mkdir -p ./build
+  mkdir -p ./build/artifacts
   id=$(docker create ${BUILD_IMAGE_NAME} /bin/sh)
-  for _path in ${ARTIFACT_PATHS//,/ }; do
-    echo "Exporting: ${_path}"
-    docker cp $id:${_path} ./build${_path} || true
-  done
+  if [[ -n "${TEST_PATH}" ]]; then
+     docker cp $id:${TEST_PATH} ./build/artifacts/test-results || true
+     echo "Test results exported"
+  fi
+  if [[ -n "${BUILD_STATUS_PATH}" ]]; then
+     docker cp $id:${BUILD_STATUS_PATH} ./build/build_status || true
+     echo "Exported build status"
+  fi
   docker rm $id
-  echo "Done exporting tests"
 }
 
 on_exit() {
@@ -118,7 +121,7 @@ build_stage ${BUILD_STAGE}
 trap "on_exit" EXIT
 
 # Export tests
-export_reports
+export_artifacts
 
 status_file=./build/build_status
 if [ -f "${status_file}" ]; then
