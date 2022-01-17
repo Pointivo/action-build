@@ -23,12 +23,24 @@ inputs:
     required: true
     description: Location of the file containing the exit code from the Docker build
   releaseTag:
-    required: true
-    description: Release/Snapshot/other tag
-  artifactPaths:
     required: false
-    description: Paths to artifacts files
-    default: "/test-results,/build_status"
+    description: Release/Snapshot/other tag
+    default: snapshot
+  dockerfileDirectory:
+    required: false
+    description: Path to the Dockerfile
+    default: ./
+  dockerfileName:
+    required: false
+    description: Dockerfile filename
+    default: Dockerfile
+  buildStage:
+    required: false
+    description: Default build stage in Dockerfile
+    default: build
+  releaseStage:
+    required: false
+    description: The final build target of the app
 outputs:
   imageTag:
     description: Docker Image Tag
@@ -49,9 +61,12 @@ runs:
         IMAGE_NAME: ${{ inputs.imageName }}
         SEMVER_FILE: ${{ inputs.semverFile }}
         CACHED_STAGES: ${{ inputs.cachedStages }}
+        BUILD_STAGE: ${{ inputs.buildStage }}
+        RELEASE_STAGE: ${{ inputs.releaseStage }}
         PULL_IMAGES: ${{ inputs.pullImages }}
         EXTRA_BUILD_ARGS: ${{ inputs.extraBuildArgs }}
         TEST_PATH: ${{ inputs.testPath }}
         BUILD_STATUS_PATH: ${{ inputs.buildStatusPath }}
         RELEASE_TAG: ${{ inputs.releaseTag }}
-        ARTIFACT_PATHS: ${{ inputs.artifactPaths }}
+        DOCKERFILE_DIRECTORY: ${{ inputs.dockerfileDirectory }}
+        DOCKERFILE_NAME: ${{ inputs.dockerfileName }}
