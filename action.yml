@@ -22,6 +22,7 @@ inputs:
   buildStatusPath:
     required: true
     description: Location of the file containing the exit code from the Docker build
+  # Not Required
   releaseTag:
     required: false
     description: Release/Snapshot/other tag
