@@ -1,6 +1,34 @@
 name: build
 description: 'Build Pointivo container images'
-#inputs:
+inputs:
+  imageName:
+    required: true
+    description: The app and also the ECR repository name
+  semverFile:
+    required: true
+    description: Path to the file which contains the SEMVER
+  cachedStages:
+    required: true
+    description: Docker stages to cache
+  pullImages:
+    required: true
+    description: Docker images to pre-pull
+  extraBuildArgs:
+    required: true
+    description: Extra build args for the Docker build command
+  testPath:
+    required: true
+    description: Location of the test results to export
+  buildStatusPath:
+    required: true
+    description: Location of the file containing the exit code from the Docker build
+  releaseTag:
+    required: true
+    description: Release/Snapshot/other tag
+  artifactPaths:
+    required: false
+    description: Paths to artifacts files
+    default: "/test-results,/build_status"
 outputs:
   imageTag:
     description: Docker Image Tag
@@ -17,3 +45,13 @@ runs:
     - id: build
       run: ${GITHUB_ACTION_PATH}/build.sh
       shell: bash
+      env:
+        IMAGE_NAME: ${{ inputs.imageName }}
+        SEMVER_FILE: ${{ inputs.semverFile }}
+        CACHED_STAGES: ${{ inputs.cachedStages }}
+        PULL_IMAGES: ${{ inputs.pullImages }}
+        EXTRA_BUILD_ARGS: ${{ inputs.extraBuildArgs }}
+        TEST_PATH: ${{ inputs.testPath }}
+        BUILD_STATUS_PATH: ${{ inputs.buildStatusPath }}
+        RELEASE_TAG: ${{ inputs.releaseTag }}
+        ARTIFACT_PATHS: ${{ inputs.artifactPaths }}

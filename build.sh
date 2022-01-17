@@ -15,7 +15,6 @@ RELEASE_STAGE=${RELEASE_STAGE:-$IMAGE_NAME}
 PULL_IMAGES=${PULL_IMAGES:-""}
 CACHE_LAYER_PREFIX=${CACHE_LAYER_PREFIX:-$IMAGE_NAME}
 BUILD_IMAGE_NAME="${CACHE_LAYER_PREFIX}_${BUILD_STAGE}"
-ARTIFACT_PATHS=${ARTIFACT_PATHS:-"/test-results,/build_status"}
 dockerfile_directory=${DOCKERFILE_DIRECTORY:-./}
 dockerfile_name=${DOCKERFILE_NAME:-Dockerfile}
 DOCKERFILE="${dockerfile_directory%/}/${dockerfile_name}"
