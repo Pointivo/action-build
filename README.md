@@ -40,16 +40,3 @@ Sample: [Dockerfile TEMPLATE](Dockerfile_TEMPLATE)
 - SEMVER
   - Override: This is, by default, grabbed from a file called `version.sh` in the root directory of the repository.
   
-
-### Upload
-
-This commits and replaces the tag so that all Github actions use the latest commit.
-
-```bash
-git add .
-git commit -m "Update Action"
-git push
-
-git tag -fa -m "Updates to the Action" v1
-git push origin master -f --tags
-```
