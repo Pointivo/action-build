@@ -8,7 +8,7 @@ fi
 # Script Variables / Defaults
 BUILD_STAGE=${BUILD_STAGE:-build}
 PULL_IMAGES=${PULL_IMAGES:-""}
-CACHED_STAGES=${CACHED_STAGES:-""}
+CACHED_STAGES=${CACHED_STAGES:-"runtime,tooling,dependencies"}
 EXTRA_BUILD_ARGS=${EXTRA_BUILD_ARGS:-""}
 RELEASE_TAG=${RELEASE_TAG:-snapshot}
 RELEASE_STAGE=${RELEASE_STAGE:-$IMAGE_NAME}
@@ -98,11 +98,15 @@ on_exit() {
 # Warmup
 ###############
 
-# Refresh Images
+# DEPRECATED: Refresh Images
 echo "Pulling latest images: ${PULL_IMAGES}"
 for _image in ${PULL_IMAGES//,/ }; do
   docker pull "${_image}"
 done
+# DEPRECATED
+
+# Pull latest images
+grep "FROM .*:.* AS" $DOCKERFILE | sed 's/FROM \(.*:.*\) AS .*/\1/I' | uniq
 
 ###############
 # Build
