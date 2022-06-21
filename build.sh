@@ -8,7 +8,7 @@ fi
 # Script Variables / Defaults
 BUILD_STAGE=${BUILD_STAGE:-build}
 PULL_IMAGES=${PULL_IMAGES:-""}
-CACHED_STAGES=${CACHED_STAGES:-"runtime,tooling,dependencies,build"}
+CACHED_STAGES=${CACHED_STAGES:-"runtime,tooling,dependencies"}
 EXTRA_BUILD_ARGS=${EXTRA_BUILD_ARGS:-""}
 RELEASE_TAG=${RELEASE_TAG:-snapshot}
 RELEASE_STAGE=${RELEASE_STAGE:-$IMAGE_NAME}
