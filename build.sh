@@ -36,9 +36,9 @@ echo "Full Semver: ${FULL_SEMVER}"
 echo "GIT_SHA_SHORT=${GIT_SHA_SHORT}" >> $GITHUB_ENV
 echo "SEMVER=${SEMVER}" >> $GITHUB_ENV
 echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
-echo "::set-output name=commitHash::${GIT_SHA_SHORT}"
-echo "::set-output name=semver::${SEMVER}"
-echo "::set-output name=imageTag::${IMAGE_TAG}"
+echo "commitHash=${GIT_SHA_SHORT}" >> $GITHUB_OUTPUT
+echo "semver=${SEMVER}" >> $GITHUB_OUTPUT
+echo "imageTag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
 export DOCKER_BUILDKIT=1
 
