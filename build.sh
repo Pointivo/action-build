@@ -49,6 +49,7 @@ build_stage() {
   command+="--target \"${_stage}\" "
   command+="-t \"${CACHE_LAYER_PREFIX}_${_stage}\" "
   command+="--build-arg SEMVER=\"${FULL_SEMVER}\" "
+  command+="--build-arg GIT_SHA_SHORT=\"${GIT_SHA_SHORT}\" "
   command+="${EXTRA_BUILD_ARGS} "
   command+="-f \"${DOCKERFILE}\" "
   command+="./"
