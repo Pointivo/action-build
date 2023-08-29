@@ -52,6 +52,7 @@ build_stage() {
   command+="--build-arg GIT_SHA_SHORT=\"${GIT_SHA_SHORT}\" "
   command+="${EXTRA_BUILD_ARGS} "
   command+="-f \"${DOCKERFILE}\" "
+  command+="--progress=plain "
   command+="./"
   eval $command
 }
@@ -67,6 +68,7 @@ build_final() {
   command+="--build-arg SEMVER=\"${FULL_SEMVER}\" "
   command+="${EXTRA_BUILD_ARGS} "
   command+="-f \"${DOCKERFILE}\" "
+  command+="--progress=plain "
   command+="./"
   eval $command
 }
