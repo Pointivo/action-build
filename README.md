@@ -34,6 +34,8 @@ Sample: [Dockerfile TEMPLATE](Dockerfile_TEMPLATE)
   - Use this if you use a different Docker file name.
 - ARTIFACT_PATHS (Default: `/test-results,/reports,/build_status`)
   - A comma seperated list of files or directories which need to be exported as an artifact.
+- SOURCE_MAP_PATH
+  - A directory containing source maps which are exported as an artifact.
 - RELEASE_TAG (Default: `snapshot`)
   - Override: This is used to specify the `prerelease` section of a full SEMVER which we tag our container images. Use depending on
   where the final output image will be deployed. `snapshot` implies master, `prerelease` implies qa`, `release` implies production.
