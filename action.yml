@@ -19,6 +19,9 @@ inputs:
   testPath:
     required: true
     description: Location of the test results to export
+  sourceMapPath:
+    required: false
+    description: Location of source maps to export
   buildStatusPath:
     required: true
     description: Location of the file containing the exit code from the Docker build
@@ -67,6 +70,7 @@ runs:
         PULL_IMAGES: ${{ inputs.pullImages }}
         EXTRA_BUILD_ARGS: ${{ inputs.extraBuildArgs }}
         TEST_PATH: ${{ inputs.testPath }}
+        SOURCE_MAP_PATH: ${{ inputs.sourceMapPath }}
         BUILD_STATUS_PATH: ${{ inputs.buildStatusPath }}
         RELEASE_TAG: ${{ inputs.releaseTag }}
         DOCKERFILE_DIRECTORY: ${{ inputs.dockerfileDirectory }}

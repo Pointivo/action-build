@@ -74,17 +74,21 @@ build_final() {
 }
 
 export_artifacts() {
-  echo "Exporting Test/Reports: ${TEST_PATH}"
   mkdir -p ./build/artifacts
   id=$(docker create ${BUILD_IMAGE_NAME} /bin/sh)
   if [[ -n "${TEST_PATH}" ]]; then
      docker cp $id:${TEST_PATH} ./build/artifacts/test-results || true
-     echo "Test results exported"
+     echo "Test results exported from ${TEST_PATH}"
   fi
   if [[ -n "${BUILD_STATUS_PATH}" ]]; then
      docker cp $id:${BUILD_STATUS_PATH} ./build/build_status || true
-     echo "Exported build status"
+     echo "Exported build status from ${BUILD_STATUS_PATH}"
   fi
+  if [[ -n "${SOURCE_MAP_PATH}" ]]; then
+     docker cp $id:${SOURCE_MAP_PATH} ./build/artifacts/source-maps || true
+     echo "Exported source maps from ${SOURCE_MAP_PATH}"
+  fi
+
   docker rm $id
 }
 
