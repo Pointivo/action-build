@@ -62,6 +62,7 @@ runs:
       run: ${GITHUB_ACTION_PATH}/build.sh
       shell: bash
       env:
+        GITHUB_ACTIONS: 'true'
         IMAGE_NAME: ${{ inputs.imageName }}
         SEMVER_FILE: ${{ inputs.semverFile }}
         CACHED_STAGES: ${{ inputs.cachedStages }}
