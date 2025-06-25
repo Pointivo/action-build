@@ -54,8 +54,8 @@ build_stage() {
   if [[ -n "${GITHUB_TOKEN}" ]]; then
     echo "GITHUB_TOKEN scopes:"
     curl -sS -f -I -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com | \
-      grep -i x-oauth-scopes
-    command+="--secret id=${GITHUB_TOKEN} "
+      grep x-oauth-scopes
+    command+="--secret id=\"${GITHUB_TOKEN}\" "
   fi
   command+="-f \"${DOCKERFILE}\" "
   command+="--progress=plain "
