@@ -51,10 +51,6 @@ build_stage() {
   command+="--build-arg SEMVER=\"${FULL_SEMVER}\" "
   command+="--build-arg GIT_SHA_SHORT=\"${GIT_SHA_SHORT}\" "
   command+="${EXTRA_BUILD_ARGS} "
-  if [[ -n "${GITHUB_TOKEN}" ]]; then
-    echo "$(curl -sS -f -I -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com)"
-    command+="--secret id=\"${GITHUB_TOKEN}\" "
-  fi
   command+="-f \"${DOCKERFILE}\" "
   command+="--progress=plain "
   command+="./"

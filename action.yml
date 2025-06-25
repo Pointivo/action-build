@@ -45,9 +45,6 @@ inputs:
   releaseStage:
     required: false
     description: The final build target of the app
-  githubToken:
-    required: false
-    description: override github.token, e.g. for an app
 outputs:
   imageTag:
     description: Docker Image Tag
@@ -71,7 +68,6 @@ runs:
         BUILD_STAGE: ${{ inputs.buildStage }}
         RELEASE_STAGE: ${{ inputs.releaseStage }}
         PULL_IMAGES: ${{ inputs.pullImages }}
-        GITHUB_TOKEN: ${{ inputs.githubToken }}
         EXTRA_BUILD_ARGS: ${{ inputs.extraBuildArgs }}
         TEST_PATH: ${{ inputs.testPath }}
         SOURCE_MAP_PATH: ${{ inputs.sourceMapPath }}
