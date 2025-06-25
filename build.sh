@@ -52,7 +52,7 @@ build_stage() {
   command+="--build-arg GIT_SHA_SHORT=\"${GIT_SHA_SHORT}\" "
   command+="${EXTRA_BUILD_ARGS} "
   if [[ -n "${GITHUB_TOKEN}" ]]; then
-    curl -sS -f -I -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com
+    echo "$(curl -sS -f -I -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com)"
     command+="--secret id=\"${GITHUB_TOKEN}\" "
   fi
   command+="-f \"${DOCKERFILE}\" "
