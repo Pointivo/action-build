@@ -68,7 +68,7 @@ runs:
         BUILD_STAGE: ${{ inputs.buildStage }}
         RELEASE_STAGE: ${{ inputs.releaseStage }}
         PULL_IMAGES: ${{ inputs.pullImages }}
-        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         EXTRA_BUILD_ARGS: ${{ inputs.extraBuildArgs }} --secret id=GITHUB_TOKEN
         TEST_PATH: ${{ inputs.testPath }}
         SOURCE_MAP_PATH: ${{ inputs.sourceMapPath }}
